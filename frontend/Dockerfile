@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM node:24-alpine AS build
 
 WORKDIR /app
 
@@ -8,13 +8,11 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build --prod
+RUN npx ng build 
 
-# Serve with Nginx
 FROM nginx:alpine
 
-COPY --from=build /app/dist/frontend /usr/share/nginx/html
-
+COPY --from=build /app/dist/angular-15-crud /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
